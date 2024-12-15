@@ -40,10 +40,11 @@ class AuditInterceptor : HandlerInterceptor {
         ex: Exception?
     ) {
         logger.info("Auditoria - Metodo: : " +
-                "IP=${request.remoteAddr}, " +
+                "IP=${request.getAttribute("x-user-ip")}, " +
                 "URI=${request.requestURI}, " +
                 "Method=${request.method}, " +
                 "StatusCode=${response.status}")
+
         /* Não usado
         if (ex != null) {
             logger.error("Requisição completa com exceção: URI=${request.requestURI}, Exceção=${ex.message}")

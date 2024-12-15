@@ -1,0 +1,10 @@
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_USER=kbank
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=kbankdb
+      - MYSQL_ROOT_PASSWORD=123
+    ports:
+      - 3306:3306

@@ -16,9 +16,7 @@ class AuditInterceptor : HandlerInterceptor {
 
     // Executa antes de chegar na controller
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
-        val ipAddress = request.remoteAddr
-        val requestUri = request.requestURI
-        //logger.info("Request recebida: IP=$ipAddress, URI=$requestUri, Method=${request.method}")
+
         return true // Retorna true para continuar a execução dos demais Interceptors
     }
 

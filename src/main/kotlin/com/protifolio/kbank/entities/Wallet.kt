@@ -11,17 +11,20 @@ data class Wallet(
     @Id
     @Column(name = "wallet_id")
     @GeneratedValue(strategy = GenerationType.UUID)
-    val walletId: UUID,
+    val walletId: UUID?,
 
     @Column(name = "cpf", unique = true)
-    val cpf: String,
+    var cpf: String?,
 
     @Column(name = "email", unique = true)
-    val email: String,
+    var email: String?,
 
     @Column(name = "name")
-    val nome: String,
+    var nome: String?,
 
     @Column(name = "balance")
-    val balance: BigDecimal
-)
+    var balance: BigDecimal?
+){
+    constructor() : this(null, null, null, null, null)
+}
+

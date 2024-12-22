@@ -16,7 +16,7 @@ class WalletService (
         var walletEncontrada = walletRepository.findByCpfOrEmail(dto.cpf,dto.email)
 
         if(walletEncontrada.isPresent){
-            throw WalletDataAlreadyExistsException("Waller AlreadyExists in DataBase")
+            throw WalletDataAlreadyExistsException("Waller Already Exists in DataBase")
         }
         var wallet = Wallet() // Inicializando a variável wallet
         wallet.apply {

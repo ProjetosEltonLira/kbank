@@ -1,13 +1,23 @@
 package com.protifolio.kbank.exception
 
 import org.springframework.http.HttpStatus
+import org.springframework.http.ProblemDetail
 import org.springframework.web.bind.annotation.ResponseStatus
 
 //Não é a melhor pratica
 //@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 class WalletDataAlreadyExistsException : KBankException {
 
-    constructor(message: String) : super(message)
+    private var detalhe : String
 
-    constructor(cause: Throwable) : super(cause)
+    constructor(detalhe: String) : super(detalhe){
+        this.detalhe = detalhe
+    }
+
+    override fun toProblemDetail(): ProblemDetail {
+        return ProblemDetail.forStatus(422).apply {
+            title = "Wallet data already exists"
+            detail = detalhe
+        }
+    }
 }

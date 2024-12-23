@@ -18,7 +18,7 @@ class WalletService (
         if(walletEncontrada.isPresent){
             throw WalletDataAlreadyExistsException("Waller Already Exists in DataBase")
         }
-        var wallet = Wallet() // Inicializando a variável wallet
+        var wallet = Wallet()
         wallet.apply {
             balance = BigDecimal.ZERO
             cpf = dto.cpf

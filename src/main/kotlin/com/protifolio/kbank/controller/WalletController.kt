@@ -1,12 +1,10 @@
 package com.protifolio.kbank.controller
 
 import com.protifolio.kbank.controller.dto.CreateWalletDto
-import com.protifolio.kbank.exception.WalletDataAlreadyExistsException
+import com.protifolio.kbank.controller.dto.DepositMoneyDto
 import com.protifolio.kbank.service.WalletService
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
-import org.springframework.http.HttpStatus
-import org.springframework.http.HttpStatusCode
-import org.springframework.http.ProblemDetail
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 
@@ -41,5 +39,20 @@ class WalletController (private var walletService: WalletService){
         else
             ResponseEntity.notFound().build()
 
+    }
+
+
+    @PostMapping(path = ["/{walletId}/deposits"])
+    fun depositMOney (@PathVariable("walletId") walletId: UUID,
+                      @Valid @RequestBody depositMoneyDto: DepositMoneyDto,
+                      servletRequest: HttpServletRequest //é possível acessar os atributos do context.
+    ):ResponseEntity<Void>{
+
+         walletService.depositMoney(
+            walletId = walletId,
+            depositMoneyDto = depositMoneyDto,
+            ipAddress = servletRequest.getAttribute("x-user-ip").toString()
+        )
+        return ResponseEntity.ok().build()
     }
 }

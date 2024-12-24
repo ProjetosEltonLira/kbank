@@ -1,17 +1,25 @@
 package com.protifolio.kbank.service
 
+import com.protifolio.kbank.Repository.DepositRepository
 import com.protifolio.kbank.Repository.WalletRepository
 import com.protifolio.kbank.controller.dto.CreateWalletDto
+import com.protifolio.kbank.controller.dto.DepositMoneyDto
+import com.protifolio.kbank.entities.Deposit
 import com.protifolio.kbank.entities.Wallet
 import com.protifolio.kbank.exception.DeleteWalletException
 import com.protifolio.kbank.exception.WalletDataAlreadyExistsException
+import com.protifolio.kbank.exception.WalletNotFoundException
+
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
+import java.time.LocalDateTime
 import java.util.*
 
 @Service
 class WalletService (
-    private var walletRepository: WalletRepository
+    private var walletRepository: WalletRepository,
+    private var depositRepository: DepositRepository
 ) {
     fun createWallet(dto: CreateWalletDto) : Wallet {
 
@@ -43,5 +51,27 @@ class WalletService (
 
        }
        return wallet.isPresent
+    }
+
+
+
+    @Transactional /*essa notação garante que to.do o código do métod.o será executado dentro de uma transação dentro do banco de dados se um transação der erro, não é dado o commit no banco de dados, faz tudo ou não faz nada*/
+    fun depositMoney(walletId: UUID, depositMoneyDto: DepositMoneyDto, ipAddress : String){
+
+        val wallet = walletRepository.findById(walletId)
+            .orElseThrow { WalletNotFoundException("There is no wallet with this id: $walletId") }
+
+        var deposit = Deposit(
+            depositId = null,
+            wallet = wallet,
+            depositValue = depositMoneyDto.value,
+            depositDateTime = LocalDateTime.now(),
+            ipAddress = ipAddress,
+        )
+        depositRepository.save(deposit)
+
+        wallet.balance = depositMoneyDto.value
+
+        walletRepository.save(wallet)
     }
 }

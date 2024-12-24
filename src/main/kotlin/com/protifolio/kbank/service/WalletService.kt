@@ -3,9 +3,11 @@ package com.protifolio.kbank.service
 import com.protifolio.kbank.Repository.WalletRepository
 import com.protifolio.kbank.controller.dto.CreateWalletDto
 import com.protifolio.kbank.entities.Wallet
+import com.protifolio.kbank.exception.DeleteWalletException
 import com.protifolio.kbank.exception.WalletDataAlreadyExistsException
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
+import java.util.*
 
 @Service
 class WalletService (
@@ -27,5 +29,19 @@ class WalletService (
         }
 
         return walletRepository.save(wallet)
+    }
+
+    fun deleteWallet(walledId: UUID): Boolean {
+
+       var wallet =  walletRepository.findById(walledId)
+
+       if(wallet.isPresent){
+           if (wallet.get().balance!!.compareTo(BigDecimal.ZERO) != 0) {
+               throw DeleteWalletException("The balance is not zero. To delete, please leave yout wallet with a balance zero")
+           }
+           walletRepository.deleteById(walledId)
+
+       }
+       return wallet.isPresent
     }
 }

@@ -23,8 +23,12 @@ data class Wallet(
     var nome: String?,
 
     @Column(name = "balance")
-    var balance: BigDecimal?
+    var balance: BigDecimal?,
+
+    //CONCEITO ACID, que garante a integridade da tabela.
+    @Version
+    var version : Long?,
 ){
-    constructor() : this(null, null, null, null, null)
+    constructor() : this(null, null, null, null, null,null)
 }
 

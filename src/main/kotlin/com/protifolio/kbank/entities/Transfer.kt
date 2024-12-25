@@ -12,7 +12,7 @@ data class Transfer(
     @Id
     @Column(name = "transfer_id")
     @GeneratedValue(strategy = GenerationType.UUID)
-    val transferId: UUID,
+    val transferId: UUID?,
 
     @ManyToOne
     @JoinColumn(name = "wallet_receiver_id")
@@ -27,4 +27,6 @@ data class Transfer(
 
     @Column(name = "transfer_date_time")
     val transferDateTime: LocalDateTime
+
+
 )

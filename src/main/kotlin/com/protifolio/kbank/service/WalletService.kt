@@ -48,14 +48,13 @@ class WalletService (
                throw DeleteWalletException("The balance is not zero. To delete, please leave yout wallet with a balance zero")
            }
            walletRepository.deleteById(walledId)
-
        }
        return wallet.isPresent
     }
 
 
 
-    @Transactional /*essa notação garante que to.do o código do métod.o será executado dentro de uma transação dentro do banco de dados se um transação der erro, não é dado o commit no banco de dados, faz tudo ou não faz nada*/
+    @Transactional /*garante que todo o código do método será executado dentro de uma transação dentro do banco de dados se um transação der erro, não é dado o commit no banco de dados, faz tudo ou não faz nada*/
     fun depositMoney(walletId: UUID, depositMoneyDto: DepositMoneyDto, ipAddress : String){
 
         val wallet = walletRepository.findById(walletId)
